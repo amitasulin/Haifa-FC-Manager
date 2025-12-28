@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --haifa-green: #00A651;
+  --haifa-dark-green: #008040;
+  --haifa-white: #FFFFFF;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900;
+}
+
