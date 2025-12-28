@@ -13,7 +13,6 @@ const playerImageMap: Record<string, string> = {
   'זוהר זסנו': `https://www.mhaifafc.com/media/players/2.jpg`,
   'שון גולדברג': `https://www.mhaifafc.com/media/players/3.jpg`,
   'קניסייף': `https://www.mhaifafc.com/media/players/16.jpg`,
-  'איתן אזולאי': `https://www.mhaifafc.com/media/players/19.jpg`,
   'ליסב עיסאת': `https://www.mhaifafc.com/media/players/24.jpg`,
   'יילה בטאי': `https://www.mhaifafc.com/media/players/25.jpg`,
   'פייר קורנו': `https://www.mhaifafc.com/media/players/27.jpg`,
