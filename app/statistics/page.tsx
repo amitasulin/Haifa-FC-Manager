@@ -141,39 +141,39 @@ export default function StatisticsPage() {
   const totalTraining = allEvents.filter(e => e.type === 'אימון').length;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold mb-8 text-haifa-green">סטטיסטיקות</h2>
+    <div className="container mx-auto px-4 py-4 md:py-8">
+      <h2 className="text-2xl sm:text-3xl font-bold mb-6 md:mb-8 text-haifa-green">סטטיסטיקות</h2>
 
       {/* Team Stats Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-haifa-green">
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">מלך השערים</h3>
-          <p className="text-2xl font-bold text-haifa-green">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
+        <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 border-l-4 border-haifa-green">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-2">מלך השערים</h3>
+          <p className="text-xl sm:text-2xl font-bold text-haifa-green break-words">
             {topScorerPlayer ? topScorerPlayer.name : 'אין נתונים'}
           </p>
-          {topScorer && <p className="text-gray-600">{topScorer.goals} שערים</p>}
+          {topScorer && <p className="text-sm sm:text-base text-gray-600">{topScorer.goals} שערים</p>}
         </div>
-        <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-haifa-green">
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">אחוז נוכחות ממוצע</h3>
-          <p className="text-2xl font-bold text-haifa-green">{avgAttendance}%</p>
+        <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 border-l-4 border-haifa-green">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-2">אחוז נוכחות ממוצע</h3>
+          <p className="text-xl sm:text-2xl font-bold text-haifa-green">{avgAttendance}%</p>
         </div>
-        <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-haifa-green">
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">מספר משחקים</h3>
-          <p className="text-2xl font-bold text-haifa-green">{totalGames}</p>
+        <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 border-l-4 border-haifa-green">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-2">מספר משחקים</h3>
+          <p className="text-xl sm:text-2xl font-bold text-haifa-green">{totalGames}</p>
         </div>
-        <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-haifa-green">
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">מספר אימונים</h3>
-          <p className="text-2xl font-bold text-haifa-green">{totalTraining}</p>
+        <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 border-l-4 border-haifa-green">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-2">מספר אימונים</h3>
+          <p className="text-xl sm:text-2xl font-bold text-haifa-green">{totalTraining}</p>
         </div>
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
         {/* Goals Chart */}
         {goalsData.length > 0 && (
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-xl font-semibold mb-4 text-gray-800">מלכי השערים</h3>
-            <ResponsiveContainer width="100%" height={300}>
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 overflow-x-auto">
+            <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-800">מלכי השערים</h3>
+            <ResponsiveContainer width="100%" height={250} className="min-w-[300px]">
               <BarChart data={goalsData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
@@ -188,9 +188,9 @@ export default function StatisticsPage() {
 
         {/* Attendance Chart */}
         {attendanceData.length > 0 && (
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-xl font-semibold mb-4 text-gray-800">אחוזי נוכחות</h3>
-            <ResponsiveContainer width="100%" height={300}>
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 overflow-x-auto">
+            <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-800">אחוזי נוכחות</h3>
+            <ResponsiveContainer width="100%" height={250} className="min-w-[300px]">
               <BarChart data={attendanceData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
@@ -205,9 +205,9 @@ export default function StatisticsPage() {
 
         {/* Cards Chart */}
         {cardsData.length > 0 && (
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-xl font-semibold mb-4 text-gray-800">כרטיסים</h3>
-            <ResponsiveContainer width="100%" height={300}>
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 overflow-x-auto">
+            <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-800">כרטיסים</h3>
+            <ResponsiveContainer width="100%" height={250} className="min-w-[300px]">
               <BarChart data={cardsData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
@@ -223,9 +223,9 @@ export default function StatisticsPage() {
 
         {/* Position Distribution */}
         {positionData.length > 0 && (
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-xl font-semibold mb-4 text-gray-800">התפלגות תפקידים</h3>
-            <ResponsiveContainer width="100%" height={300}>
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 overflow-x-auto">
+            <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-800">התפלגות תפקידים</h3>
+            <ResponsiveContainer width="100%" height={250} className="min-w-[300px]">
               <PieChart>
                 <Pie
                   data={positionData}
@@ -250,23 +250,23 @@ export default function StatisticsPage() {
 
       {/* Detailed Player Stats Table */}
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <h3 className="text-xl font-semibold p-6 text-gray-800 border-b">סטטיסטיקות מפורטות לפי שחקן</h3>
+        <h3 className="text-lg sm:text-xl font-semibold p-4 sm:p-6 text-gray-800 border-b">סטטיסטיקות מפורטות לפי שחקן</h3>
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[600px]">
             <thead className="bg-haifa-green text-white">
               <tr>
-                <th className="px-6 py-4 text-right">שם</th>
-                <th className="px-6 py-4 text-right">מספר משחקים</th>
-                <th className="px-6 py-4 text-right">שערים</th>
-                <th className="px-6 py-4 text-right">כרטיסים צהובים</th>
-                <th className="px-6 py-4 text-right">כרטיסים אדומים</th>
-                <th className="px-6 py-4 text-right">אחוז נוכחות</th>
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm sm:text-base">שם</th>
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm sm:text-base">מספר משחקים</th>
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm sm:text-base">שערים</th>
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm sm:text-base">כרטיסים צהובים</th>
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm sm:text-base">כרטיסים אדומים</th>
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm sm:text-base">אחוז נוכחות</th>
               </tr>
             </thead>
             <tbody>
               {stats.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
+                  <td colSpan={6} className="px-4 sm:px-6 py-6 sm:py-8 text-center text-gray-500 text-sm sm:text-base">
                     אין נתונים. הוסף שחקנים ואירועים להתחיל.
                   </td>
                 </tr>
@@ -279,108 +279,108 @@ export default function StatisticsPage() {
                   
                   return (
                     <tr key={stat.playerId} className="border-t hover:bg-gray-50">
-                      <td className="px-6 py-4 font-semibold">{player.name}</td>
-                      <td className="px-6 py-4">{stat.gamesPlayed}</td>
-                      <td className="px-6 py-4">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 font-semibold text-sm sm:text-base">{player.name}</td>
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base">{stat.gamesPlayed}</td>
+                      <td className="px-3 sm:px-6 py-3 sm:py-4">
                         {isEditing && editingStats?.stat === 'goals' ? (
-                          <div className="flex gap-2">
+                          <div className="flex gap-1 sm:gap-2">
                             <input
                               type="number"
                               min="0"
                               value={tempValue}
                               onChange={(e) => setTempValue(parseInt(e.target.value) || 0)}
-                              className="w-20 px-2 py-1 border rounded"
+                              className="w-16 sm:w-20 px-1 sm:px-2 py-1 border rounded text-sm"
                               autoFocus
                             />
                             <button
                               onClick={handleStatSubmit}
-                              className="px-2 py-1 bg-green-500 text-white rounded text-sm"
+                              className="px-1.5 sm:px-2 py-1 bg-green-500 text-white rounded text-xs sm:text-sm"
                             >
                               ✓
                             </button>
                             <button
                               onClick={() => setEditingStats(null)}
-                              className="px-2 py-1 bg-red-500 text-white rounded text-sm"
+                              className="px-1.5 sm:px-2 py-1 bg-red-500 text-white rounded text-xs sm:text-sm"
                             >
                               ✕
                             </button>
                           </div>
                         ) : (
                           <span
-                            className="cursor-pointer hover:text-haifa-green"
+                            className="cursor-pointer hover:text-haifa-green text-sm sm:text-base"
                             onClick={() => handleStatClick(stat.playerId, 'goals', stat.goals)}
                           >
                             {stat.goals}
                           </span>
                         )}
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4">
                         {isEditing && editingStats?.stat === 'yellowCards' ? (
-                          <div className="flex gap-2">
+                          <div className="flex gap-1 sm:gap-2">
                             <input
                               type="number"
                               min="0"
                               value={tempValue}
                               onChange={(e) => setTempValue(parseInt(e.target.value) || 0)}
-                              className="w-20 px-2 py-1 border rounded"
+                              className="w-16 sm:w-20 px-1 sm:px-2 py-1 border rounded text-sm"
                               autoFocus
                             />
                             <button
                               onClick={handleStatSubmit}
-                              className="px-2 py-1 bg-green-500 text-white rounded text-sm"
+                              className="px-1.5 sm:px-2 py-1 bg-green-500 text-white rounded text-xs sm:text-sm"
                             >
                               ✓
                             </button>
                             <button
                               onClick={() => setEditingStats(null)}
-                              className="px-2 py-1 bg-red-500 text-white rounded text-sm"
+                              className="px-1.5 sm:px-2 py-1 bg-red-500 text-white rounded text-xs sm:text-sm"
                             >
                               ✕
                             </button>
                           </div>
                         ) : (
                           <span
-                            className="cursor-pointer hover:text-haifa-green"
+                            className="cursor-pointer hover:text-haifa-green text-sm sm:text-base"
                             onClick={() => handleStatClick(stat.playerId, 'yellowCards', stat.yellowCards)}
                           >
                             {stat.yellowCards}
                           </span>
                         )}
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4">
                         {isEditing && editingStats?.stat === 'redCards' ? (
-                          <div className="flex gap-2">
+                          <div className="flex gap-1 sm:gap-2">
                             <input
                               type="number"
                               min="0"
                               value={tempValue}
                               onChange={(e) => setTempValue(parseInt(e.target.value) || 0)}
-                              className="w-20 px-2 py-1 border rounded"
+                              className="w-16 sm:w-20 px-1 sm:px-2 py-1 border rounded text-sm"
                               autoFocus
                             />
                             <button
                               onClick={handleStatSubmit}
-                              className="px-2 py-1 bg-green-500 text-white rounded text-sm"
+                              className="px-1.5 sm:px-2 py-1 bg-green-500 text-white rounded text-xs sm:text-sm"
                             >
                               ✓
                             </button>
                             <button
                               onClick={() => setEditingStats(null)}
-                              className="px-2 py-1 bg-red-500 text-white rounded text-sm"
+                              className="px-1.5 sm:px-2 py-1 bg-red-500 text-white rounded text-xs sm:text-sm"
                             >
                               ✕
                             </button>
                           </div>
                         ) : (
                           <span
-                            className="cursor-pointer hover:text-haifa-green"
+                            className="cursor-pointer hover:text-haifa-green text-sm sm:text-base"
                             onClick={() => handleStatClick(stat.playerId, 'redCards', stat.redCards)}
                           >
                             {stat.redCards}
                           </span>
                         )}
                       </td>
-                      <td className="px-6 py-4">{stat.attendancePercentage}%</td>
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base">{stat.attendancePercentage}%</td>
                     </tr>
                   );
                 })

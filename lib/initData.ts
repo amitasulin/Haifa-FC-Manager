@@ -1,5 +1,5 @@
 import { Player, Event } from '@/types';
-import { addPlayer, addEvent, getPlayers, getEvents } from './storage';
+import { addPlayer, addEvent, getPlayers, getEvents, savePlayers } from './storage';
 import { getPlayerImageUrl } from './playerImages';
 
 // שחקנים עדכניים של מכבי חיפה - עונת 2024/2025
@@ -70,7 +70,7 @@ const samplePlayers: Omit<Player, 'id'>[] = [
     weight: 75
   },
   { 
-    name: 'קניסייף', 
+    name: 'קני סייף', 
     jerseyNumber: 16, 
     position: 'הגנה', 
     age: 25, 
@@ -162,7 +162,7 @@ const samplePlayers: Omit<Player, 'id'>[] = [
     weight: 71
   },
   { 
-    name: 'גונין אור', 
+    name: 'גוני נאור', 
     jerseyNumber: 5, 
     position: 'קישור', 
     age: 24, 
@@ -264,7 +264,7 @@ const samplePlayers: Omit<Player, 'id'>[] = [
     weight: 70
   },
   { 
-    name: 'סוף פודגוראנוק', 
+    name: 'סוף פודגוראנו', 
     jerseyNumber: 17, 
     position: 'התקפה', 
     age: 22, 
@@ -274,7 +274,7 @@ const samplePlayers: Omit<Player, 'id'>[] = [
     weight: 76
   },
   { 
-    name: 'גיאן מלמד', 
+    name: 'גיא מלמד', 
     jerseyNumber: 18, 
     position: 'התקפה', 
     age: 25, 
@@ -404,6 +404,9 @@ export const initializeSampleData = () => {
         imageUrl: imageUrl,
       });
     });
+  } else {
+    // אם יש שחקנים, נעדכן את השמות
+    updatePlayerNames();
   }
   
   // הוספת אירועים רק אם אין אירועים
@@ -415,6 +418,57 @@ export const initializeSampleData = () => {
       });
     });
   }
+};
+
+// פונקציה למחיקת כפילויות שחקנים
+export const removeDuplicatePlayers = () => {
+  if (typeof window === 'undefined') return;
+  
+  const players = getPlayers();
+  const seenJerseyNumbers = new Set<number>();
+  const uniquePlayers: Player[] = [];
+  
+  // שמירה על השחקן הראשון עם כל מספר חולצה
+  players.forEach(player => {
+    if (!seenJerseyNumbers.has(player.jerseyNumber)) {
+      seenJerseyNumbers.add(player.jerseyNumber);
+      uniquePlayers.push(player);
+    }
+  });
+  
+  // אם יש כפילויות, נשמור את הרשימה המעודכנת
+  if (uniquePlayers.length !== players.length) {
+    savePlayers(uniquePlayers);
+  }
+};
+
+// פונקציה לעדכון שמות שחקנים קיימים
+export const updatePlayerNames = () => {
+  if (typeof window === 'undefined') return;
+  
+  const players = getPlayers();
+  const nameUpdates: Record<number, string> = {
+    7: 'סילבה קאני',  // עדכון שם אם צריך
+    16: 'קני סייף',  // קניסייף -> קני סייף
+    5: 'גוני נאור',  // גונין אור -> גוני נאור
+    18: 'גיא מלמד',  // גיאן מלמד -> גיא מלמד
+    17: 'סוף פודגוראנו',  // סוף פודגוראנוק -> סוף פודגוראנו
+  };
+  
+  let updated = false;
+  players.forEach(player => {
+    if (nameUpdates[player.jerseyNumber] && player.name !== nameUpdates[player.jerseyNumber]) {
+      player.name = nameUpdates[player.jerseyNumber];
+      updated = true;
+    }
+  });
+  
+  if (updated) {
+    savePlayers(players);
+  }
+  
+  // מחיקת כפילויות אחרי עדכון השמות
+  removeDuplicatePlayers();
 };
 
 // פונקציה לאתחול מחדש של הנתונים (מחיקה והוספה מחדש)

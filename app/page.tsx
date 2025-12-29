@@ -56,28 +56,30 @@ export default function Dashboard() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header with Logo and Club Info */}
-      <div className="bg-gradient-to-r from-haifa-green to-haifa-dark-green text-white rounded-lg shadow-lg p-8 mb-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-6">
-            <Logo size={120} />
+      <div className="bg-gradient-to-r from-haifa-green to-haifa-dark-green text-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 mb-6 md:mb-8">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-right">
+            <div className="sm:w-[100px] md:w-[120px]">
+              <Logo size={80} />
+            </div>
             <div>
-              <h1 className="text-4xl font-bold mb-2">מכבי חיפה</h1>
-              <p className="text-xl opacity-90">מועדון הכדורגל מכבי חיפה</p>
-              <p className="text-sm opacity-75 mt-2">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">מכבי חיפה</h1>
+              <p className="text-base sm:text-lg md:text-xl opacity-90">מועדון הכדורגל מכבי חיפה</p>
+              <p className="text-xs sm:text-sm opacity-75 mt-2">
                 נוסד: 1913 | 15 אליפויות | 6 גביעי מדינה | 5 גביעי טוטו | 5 אלוף האלופים | 3 השתתפות בליגת האלופות
               </p>
             </div>
           </div>
-          <div className="text-right md:text-left">
-            <p className="text-lg font-semibold mb-1">אצטדיון סמי עופר</p>
-            <p className="text-sm opacity-90">חיפה, ישראל</p>
+          <div className="text-center sm:text-right">
+            <p className="text-base sm:text-lg font-semibold mb-1">אצטדיון סמי עופר</p>
+            <p className="text-xs sm:text-sm opacity-90">חיפה, ישראל</p>
           </div>
         </div>
       </div>
 
-      <h2 className="text-3xl font-bold mb-8 text-haifa-green">דשבורד ראשי</h2>
+      <h2 className="text-2xl sm:text-3xl font-bold mb-6 md:mb-8 text-haifa-green">דשבורד ראשי</h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
         {/* Next Event Card */}
         <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-haifa-green">
           <h3 className="text-xl font-semibold mb-4 text-gray-800">האירוע הבא</h3>
@@ -207,16 +209,16 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="mt-8 flex gap-4">
+      <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
         <Link
           href="/players"
-          className="px-6 py-3 bg-haifa-green text-white rounded-lg hover:bg-haifa-dark-green transition-colors"
+          className="px-4 sm:px-6 py-2 sm:py-3 bg-haifa-green text-white rounded-lg hover:bg-haifa-dark-green transition-colors text-center text-sm sm:text-base"
         >
           ניהול שחקנים
         </Link>
         <Link
           href="/schedule"
-          className="px-6 py-3 bg-haifa-green text-white rounded-lg hover:bg-haifa-dark-green transition-colors"
+          className="px-4 sm:px-6 py-2 sm:py-3 bg-haifa-green text-white rounded-lg hover:bg-haifa-dark-green transition-colors text-center text-sm sm:text-base"
         >
           לוח אימונים ומשחקים
         </Link>

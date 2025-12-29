@@ -135,12 +135,12 @@ export default function SchedulePage() {
   const weekDays = eachDayOfInterval({ start: weekStart, end: weekEnd });
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold text-haifa-green">לוח אימונים ומשחקים</h2>
+    <div className="container mx-auto px-4 py-4 md:py-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <h2 className="text-2xl sm:text-3xl font-bold text-haifa-green">לוח אימונים ומשחקים</h2>
         <button
           onClick={() => setShowModal(true)}
-          className="px-6 py-3 bg-haifa-green text-white rounded-lg hover:bg-haifa-dark-green transition-colors"
+          className="px-4 sm:px-6 py-2 sm:py-3 bg-haifa-green text-white rounded-lg hover:bg-haifa-dark-green transition-colors text-sm sm:text-base w-full sm:w-auto"
         >
           + הוסף אירוע
         </button>
@@ -148,23 +148,23 @@ export default function SchedulePage() {
 
       {/* Next Game Highlight */}
       {nextGame && (
-        <div className="mb-6 p-6 bg-gradient-to-r from-haifa-green to-haifa-dark-green text-white rounded-lg shadow-lg">
-          <h3 className="text-xl font-semibold mb-2">המשחק הבא</h3>
-          <div className="flex flex-wrap gap-4">
-            <p className="text-lg">
+        <div className="mb-6 p-4 sm:p-6 bg-gradient-to-r from-haifa-green to-haifa-dark-green text-white rounded-lg shadow-lg">
+          <h3 className="text-lg sm:text-xl font-semibold mb-2">המשחק הבא</h3>
+          <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4">
+            <p className="text-base sm:text-lg">
               📅 {format(parseISO(`${nextGame.date}T${nextGame.time}`), 'dd/MM/yyyy', { locale: he })}
             </p>
-            <p className="text-lg">🕐 {nextGame.time}</p>
-            <p className="text-lg">📍 {nextGame.location}</p>
+            <p className="text-base sm:text-lg">🕐 {nextGame.time}</p>
+            <p className="text-base sm:text-lg">📍 {nextGame.location}</p>
           </div>
         </div>
       )}
 
       {/* View Mode Toggle */}
-      <div className="mb-4 flex gap-4 items-center">
+      <div className="mb-4 flex gap-2 sm:gap-4 items-center">
         <button
           onClick={() => setViewMode('week')}
-          className={`px-4 py-2 rounded-lg transition-colors ${
+          className={`px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base ${
             viewMode === 'week'
               ? 'bg-haifa-green text-white'
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -174,7 +174,7 @@ export default function SchedulePage() {
         </button>
         <button
           onClick={() => setViewMode('month')}
-          className={`px-4 py-2 rounded-lg transition-colors ${
+          className={`px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base ${
             viewMode === 'month'
               ? 'bg-haifa-green text-white'
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -186,43 +186,43 @@ export default function SchedulePage() {
 
       {/* Week View */}
       {viewMode === 'week' && (
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <div className="flex justify-between mb-4">
+        <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 mb-4">
             <button
               onClick={() => setCurrentDate(new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000))}
-              className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+              className="px-3 sm:px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 text-sm sm:text-base w-full sm:w-auto"
             >
               ← שבוע קודם
             </button>
-            <h3 className="text-xl font-semibold">
+            <h3 className="text-base sm:text-xl font-semibold text-center">
               {format(weekStart, 'dd/MM/yyyy', { locale: he })} - {format(weekEnd, 'dd/MM/yyyy', { locale: he })}
             </h3>
             <button
               onClick={() => setCurrentDate(new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000))}
-              className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+              className="px-3 sm:px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 text-sm sm:text-base w-full sm:w-auto"
             >
               שבוע הבא →
             </button>
           </div>
-          <div className="grid grid-cols-7 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-2 md:gap-4">
             {weekDays.map((day) => {
               const dayEvents = getEventsForDate(day);
               return (
-                <div key={day.toISOString()} className="border rounded-lg p-2 min-h-[200px]">
-                  <div className="font-semibold text-center mb-2 text-haifa-green">
+                <div key={day.toISOString()} className="border rounded-lg p-2 min-h-[150px] md:min-h-[200px]">
+                  <div className="font-semibold text-center mb-2 text-haifa-green text-sm md:text-base">
                     {format(day, 'dd/MM', { locale: he })}
                   </div>
                   <div className="space-y-2">
                     {dayEvents.map((event) => (
                       <div
                         key={event.id}
-                        className={`p-2 rounded text-sm text-white ${
+                        className={`p-1.5 md:p-2 rounded text-xs md:text-sm text-white ${
                           event.type === 'משחק' ? 'bg-red-500' : 'bg-blue-500'
                         }`}
                       >
                         <div className="font-semibold">{event.type}</div>
-                        <div>{event.time}</div>
-                        <div className="text-xs">{event.location}</div>
+                        <div className="text-xs md:text-sm">{event.time}</div>
+                        <div className="text-xs truncate">{event.location}</div>
                       </div>
                     ))}
                   </div>
@@ -235,15 +235,15 @@ export default function SchedulePage() {
 
       {/* Month View - List */}
       {viewMode === 'month' && (
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <table className="w-full">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden overflow-x-auto">
+          <table className="w-full min-w-[600px]">
             <thead className="bg-haifa-green text-white">
               <tr>
-                <th className="px-6 py-4 text-right">תאריך</th>
-                <th className="px-6 py-4 text-right">שעה</th>
-                <th className="px-6 py-4 text-right">סוג</th>
-                <th className="px-6 py-4 text-right">מיקום</th>
-                <th className="px-6 py-4 text-right">פעולות</th>
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm sm:text-base">תאריך</th>
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm sm:text-base">שעה</th>
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm sm:text-base">סוג</th>
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm sm:text-base">מיקום</th>
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm sm:text-base">פעולות</th>
               </tr>
             </thead>
             <tbody>
@@ -262,37 +262,37 @@ export default function SchedulePage() {
                   })
                   .map((event) => (
                     <tr key={event.id} className="border-t hover:bg-gray-50">
-                      <td className="px-6 py-4">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base">
                         {format(parseISO(event.date), 'dd/MM/yyyy', { locale: he })}
                       </td>
-                      <td className="px-6 py-4">{event.time}</td>
-                      <td className="px-6 py-4">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base">{event.time}</td>
+                      <td className="px-3 sm:px-6 py-3 sm:py-4">
                         <span
-                          className={`px-3 py-1 rounded-full text-sm text-white ${
+                          className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm text-white ${
                             event.type === 'משחק' ? 'bg-red-500' : 'bg-blue-500'
                           }`}
                         >
                           {event.type}
                         </span>
                       </td>
-                      <td className="px-6 py-4">{event.location}</td>
-                      <td className="px-6 py-4">
-                        <div className="flex gap-2">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base">{event.location}</td>
+                      <td className="px-3 sm:px-6 py-3 sm:py-4">
+                        <div className="flex flex-col sm:flex-row gap-1 sm:gap-2">
                           <button
                             onClick={() => handleAttendance(event)}
-                            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+                            className="px-2 sm:px-4 py-1.5 sm:py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors text-xs sm:text-sm"
                           >
                             נוכחות
                           </button>
                           <button
                             onClick={() => handleEdit(event)}
-                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                            className="px-2 sm:px-4 py-1.5 sm:py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors text-xs sm:text-sm"
                           >
                             ערוך
                           </button>
                           <button
                             onClick={() => handleDelete(event.id)}
-                            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+                            className="px-2 sm:px-4 py-1.5 sm:py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors text-xs sm:text-sm"
                           >
                             מחק
                           </button>
@@ -308,9 +308,9 @@ export default function SchedulePage() {
 
       {/* Event Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-            <h3 className="text-2xl font-bold mb-6 text-haifa-green">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-4 sm:p-8 max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-haifa-green">
               {editingEvent ? 'ערוך אירוע' : 'הוסף אירוע חדש'}
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -358,14 +358,14 @@ export default function SchedulePage() {
               <div className="flex gap-4 mt-6">
                 <button
                   type="submit"
-                  className="flex-1 px-6 py-3 bg-haifa-green text-white rounded-lg hover:bg-haifa-dark-green transition-colors"
+                  className="flex-1 px-4 sm:px-6 py-2 sm:py-3 bg-haifa-green text-white rounded-lg hover:bg-haifa-dark-green transition-colors text-sm sm:text-base"
                 >
                   {editingEvent ? 'עדכן' : 'הוסף'}
                 </button>
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="flex-1 px-6 py-3 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors"
+                  className="flex-1 px-4 sm:px-6 py-2 sm:py-3 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors text-sm sm:text-base"
                 >
                   ביטול
                 </button>
@@ -377,9 +377,9 @@ export default function SchedulePage() {
 
       {/* Attendance Modal */}
       {showAttendanceModal && selectedEvent && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-8 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
-            <h3 className="text-2xl font-bold mb-6 text-haifa-green">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-4 sm:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-haifa-green">
               נוכחות - {selectedEvent.type} ({format(parseISO(selectedEvent.date), 'dd/MM/yyyy', { locale: he })})
             </h3>
             <div className="space-y-2">
@@ -388,25 +388,25 @@ export default function SchedulePage() {
                 return (
                   <div
                     key={player.id}
-                    className={`flex items-center justify-between p-4 rounded-lg border-2 cursor-pointer transition-colors ${
+                    className={`flex items-center justify-between p-3 sm:p-4 rounded-lg border-2 cursor-pointer transition-colors ${
                       isPresent
                         ? 'bg-green-50 border-green-500'
                         : 'bg-gray-50 border-gray-300'
                     }`}
                     onClick={() => toggleAttendance(player.id)}
                   >
-                    <div className="flex items-center gap-4">
-                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                    <div className="flex items-center gap-2 sm:gap-4">
+                      <div className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
                         isPresent ? 'bg-green-500 border-green-500' : 'border-gray-400'
                       }`}>
-                        {isPresent && <span className="text-white">✓</span>}
+                        {isPresent && <span className="text-white text-xs sm:text-sm">✓</span>}
                       </div>
-                      <div>
-                        <div className="font-semibold">{player.name}</div>
-                        <div className="text-sm text-gray-600">#{player.jerseyNumber} - {player.position}</div>
+                      <div className="min-w-0 flex-1">
+                        <div className="font-semibold text-sm sm:text-base">{player.name}</div>
+                        <div className="text-xs sm:text-sm text-gray-600">#{player.jerseyNumber} - {player.position}</div>
                       </div>
                     </div>
-                    <span className={`px-3 py-1 rounded-full text-sm ${
+                    <span className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm flex-shrink-0 ${
                       isPresent
                         ? 'bg-green-500 text-white'
                         : 'bg-gray-300 text-gray-700'

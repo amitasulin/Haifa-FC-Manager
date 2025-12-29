@@ -8,7 +8,11 @@ import {
   deletePlayer,
 } from "@/lib/storage";
 import { Player, PlayerPosition } from "@/types";
-import { initializeSampleData } from "@/lib/initData";
+import {
+  initializeSampleData,
+  updatePlayerNames,
+  removeDuplicatePlayers,
+} from "@/lib/initData";
 import ResetDataButton from "@/components/ResetDataButton";
 import PlayerImage from "@/components/PlayerImage";
 
@@ -34,6 +38,10 @@ export default function PlayersPage() {
   useEffect(() => {
     // טעינת נתונים - אם אין שחקנים, נטען נתונים לדוגמה
     initializeSampleData();
+    // עדכון שמות שחקנים קיימים
+    updatePlayerNames();
+    // מחיקת כפילויות
+    removeDuplicatePlayers();
     // טעינה מחדש אחרי אתחול הנתונים
     setTimeout(() => {
       loadPlayers();
@@ -141,14 +149,16 @@ export default function PlayersPage() {
   const positions: PlayerPosition[] = ["שוער", "הגנה", "קישור", "התקפה"];
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold text-haifa-green">ניהול שחקנים</h2>
-        <div className="flex gap-3">
+    <div className="container mx-auto px-4 py-4 md:py-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <h2 className="text-2xl md:text-3xl font-bold text-haifa-green">
+          ניהול שחקנים
+        </h2>
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
           <ResetDataButton />
           <button
             onClick={() => setShowModal(true)}
-            className="px-6 py-3 bg-haifa-green text-white rounded-lg hover:bg-haifa-dark-green transition-colors"
+            className="px-4 sm:px-6 py-2 sm:py-3 bg-haifa-green text-white rounded-lg hover:bg-haifa-dark-green transition-colors text-sm sm:text-base"
           >
             + הוסף שחקן
           </button>
@@ -156,12 +166,14 @@ export default function PlayersPage() {
       </div>
 
       {/* Sort Controls */}
-      <div className="mb-4 flex gap-4 items-center">
-        <label className="text-gray-700 font-semibold">מיון לפי:</label>
+      <div className="mb-4 flex flex-col sm:flex-row gap-2 sm:gap-4 items-start sm:items-center">
+        <label className="text-gray-700 font-semibold text-sm sm:text-base">
+          מיון לפי:
+        </label>
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green"
+          className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green text-sm sm:text-base"
         >
           <option value="name">שם</option>
           <option value="age">גיל</option>
@@ -192,17 +204,17 @@ export default function PlayersPage() {
               </div>
 
               {/* Player Info */}
-              <div className="p-4">
+              <div className="p-3 sm:p-4">
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-xl font-bold text-gray-800">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-800 break-words">
                     {player.name}
                   </h3>
-                  <span className="text-2xl font-bold text-haifa-green">
+                  <span className="text-xl sm:text-2xl font-bold text-haifa-green flex-shrink-0 mr-2">
                     #{player.jerseyNumber}
                   </span>
                 </div>
 
-                <div className="space-y-1 text-sm text-gray-600 mb-4">
+                <div className="space-y-1 text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">
                   <div className="flex justify-between">
                     <span className="font-semibold">תפקיד:</span>
                     <span>{player.position}</span>
@@ -232,16 +244,16 @@ export default function PlayersPage() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-2 mt-4">
+                <div className="flex gap-2 mt-3 sm:mt-4">
                   <button
                     onClick={() => handleEdit(player)}
-                    className="flex-1 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors text-sm"
+                    className="flex-1 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors text-xs sm:text-sm"
                   >
                     ערוך
                   </button>
                   <button
                     onClick={() => handleDelete(player.id)}
-                    className="flex-1 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors text-sm"
+                    className="flex-1 px-3 sm:px-4 py-1.5 sm:py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors text-xs sm:text-sm"
                   >
                     מחק
                   </button>
@@ -254,14 +266,14 @@ export default function PlayersPage() {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-            <h3 className="text-2xl font-bold mb-6 text-haifa-green">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-4 sm:p-8 max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-haifa-green">
               {editingPlayer ? "ערוך שחקן" : "הוסף שחקן חדש"}
             </h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label className="block text-gray-700 font-semibold mb-1 sm:mb-2 text-sm sm:text-base">
                   שם מלא
                 </label>
                 <input
@@ -271,11 +283,11 @@ export default function PlayersPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green"
+                  className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green text-sm sm:text-base"
                 />
               </div>
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label className="block text-gray-700 font-semibold mb-1 sm:mb-2 text-sm sm:text-base">
                   מספר חולצה
                 </label>
                 <input
@@ -286,11 +298,11 @@ export default function PlayersPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, jerseyNumber: e.target.value })
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green"
+                  className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green text-sm sm:text-base"
                 />
               </div>
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label className="block text-gray-700 font-semibold mb-1 sm:mb-2 text-sm sm:text-base">
                   תפקיד
                 </label>
                 <select
@@ -301,7 +313,7 @@ export default function PlayersPage() {
                       position: e.target.value as PlayerPosition,
                     })
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green"
+                  className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green text-sm sm:text-base"
                 >
                   {positions.map((pos) => (
                     <option key={pos} value={pos}>
@@ -311,7 +323,7 @@ export default function PlayersPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label className="block text-gray-700 font-semibold mb-1 sm:mb-2 text-sm sm:text-base">
                   גיל
                 </label>
                 <input
@@ -323,11 +335,11 @@ export default function PlayersPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, age: e.target.value })
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green"
+                  className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green text-sm sm:text-base"
                 />
               </div>
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label className="block text-gray-700 font-semibold mb-1 sm:mb-2 text-sm sm:text-base">
                   קישור לתמונה (URL)
                 </label>
                 <input
@@ -337,11 +349,11 @@ export default function PlayersPage() {
                     setFormData({ ...formData, imageUrl: e.target.value })
                   }
                   placeholder="https://example.com/player.jpg"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green"
+                  className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green text-sm sm:text-base"
                 />
               </div>
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label className="block text-gray-700 font-semibold mb-1 sm:mb-2 text-sm sm:text-base">
                   לאום
                 </label>
                 <input
@@ -351,12 +363,12 @@ export default function PlayersPage() {
                     setFormData({ ...formData, nationality: e.target.value })
                   }
                   placeholder="ישראל"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green"
+                  className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green text-sm sm:text-base"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label className="block text-gray-700 font-semibold mb-1 sm:mb-2 text-sm sm:text-base">
                     גובה (ס"מ)
                   </label>
                   <input
@@ -367,11 +379,11 @@ export default function PlayersPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, height: e.target.value })
                     }
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green"
+                    className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green text-sm sm:text-base"
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label className="block text-gray-700 font-semibold mb-1 sm:mb-2 text-sm sm:text-base">
                     משקל (ק"ג)
                   </label>
                   <input
@@ -382,13 +394,13 @@ export default function PlayersPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, weight: e.target.value })
                     }
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green"
+                    className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green text-sm sm:text-base"
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label className="block text-gray-700 font-semibold mb-1 sm:mb-2 text-sm sm:text-base">
                     תאריך לידה
                   </label>
                   <input
@@ -397,11 +409,11 @@ export default function PlayersPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, dateOfBirth: e.target.value })
                     }
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green"
+                    className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green text-sm sm:text-base"
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label className="block text-gray-700 font-semibold mb-1 sm:mb-2 text-sm sm:text-base">
                     חוזה עד
                   </label>
                   <input
@@ -413,7 +425,7 @@ export default function PlayersPage() {
                         contractUntil: e.target.value,
                       })
                     }
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green"
+                    className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-haifa-green text-sm sm:text-base"
                   />
                 </div>
               </div>
@@ -425,26 +437,26 @@ export default function PlayersPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, isInjured: e.target.checked })
                   }
-                  className="w-5 h-5 text-haifa-green focus:ring-haifa-green"
+                  className="w-4 h-4 sm:w-5 sm:h-5 text-haifa-green focus:ring-haifa-green"
                 />
                 <label
                   htmlFor="isInjured"
-                  className="mr-2 text-gray-700 font-semibold"
+                  className="mr-2 text-gray-700 font-semibold text-sm sm:text-base"
                 >
                   שחקן פצוע
                 </label>
               </div>
-              <div className="flex gap-4 mt-6">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4 sm:mt-6">
                 <button
                   type="submit"
-                  className="flex-1 px-6 py-3 bg-haifa-green text-white rounded-lg hover:bg-haifa-dark-green transition-colors"
+                  className="flex-1 px-4 sm:px-6 py-2 sm:py-3 bg-haifa-green text-white rounded-lg hover:bg-haifa-dark-green transition-colors text-sm sm:text-base"
                 >
                   {editingPlayer ? "עדכן" : "הוסף"}
                 </button>
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="flex-1 px-6 py-3 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors"
+                  className="flex-1 px-4 sm:px-6 py-2 sm:py-3 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors text-sm sm:text-base"
                 >
                   ביטול
                 </button>

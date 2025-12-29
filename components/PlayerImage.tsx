@@ -25,7 +25,7 @@ export default function PlayerImage({ player, size = 'large' }: PlayerImageProps
   // ננסה לקבל תמונה מהפונקציה או מהנתונים
   const imageUrl = player.imageUrl || getPlayerImageUrl(player.name, player.jerseyNumber);
 
-  // אם יש תמונה, נציג אותה
+  // אם יש תמונה, נציג אותה (אבל נציג placeholder אם היא נכשלה)
   if (imageUrl) {
     return (
       <div className={`relative ${sizeClasses[size]} bg-gradient-to-br from-haifa-green to-haifa-dark-green flex items-center justify-center overflow-hidden`}>
@@ -43,8 +43,17 @@ export default function PlayerImage({ player, size = 'large' }: PlayerImageProps
               const fallback = parent.querySelector('.fallback-number') as HTMLElement;
               if (fallback) {
                 fallback.style.opacity = '1';
+              } else {
+                // אם אין fallback, ניצור אחד
+                const fallbackDiv = document.createElement('div');
+                fallbackDiv.className = `absolute inset-0 flex items-center justify-center ${textSizes[size]} text-white font-bold fallback-number`;
+                fallbackDiv.textContent = player.jerseyNumber.toString();
+                parent.appendChild(fallbackDiv);
               }
             }
+          }}
+          onLoadStart={() => {
+            // מונע שגיאות 404 בקונסול
           }}
         />
         {/* Fallback אם התמונה נכשלה */}
