@@ -20,10 +20,14 @@ export default function Navigation() {
     <nav className="bg-haifa-green text-white shadow-lg">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 md:gap-3">
+          <Link 
+            href="/" 
+            className="flex items-center gap-2 md:gap-3 hover:opacity-90 transition-opacity cursor-pointer"
+            onClick={() => setIsMenuOpen(false)}
+          >
             <Logo size={40} />
             <h1 className="text-lg md:text-2xl font-bold">מכבי חיפה - מנהל קבוצה</h1>
-          </div>
+          </Link>
           
           {/* Desktop Menu */}
           <div className="hidden md:flex gap-4">

@@ -173,10 +173,17 @@ export default function StatisticsPage() {
         {goalsData.length > 0 && (
           <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 overflow-x-auto">
             <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-800">מלכי השערים</h3>
-            <ResponsiveContainer width="100%" height={250} className="min-w-[300px]">
-              <BarChart data={goalsData}>
+            <ResponsiveContainer width="100%" height={300} className="min-w-[300px]">
+              <BarChart data={goalsData} margin={{ top: 5, right: 10, left: 0, bottom: 80 }}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
+                <XAxis 
+                  dataKey="name" 
+                  angle={-45} 
+                  textAnchor="end" 
+                  height={80}
+                  interval={0}
+                  tick={{ fontSize: 12 }}
+                />
                 <YAxis />
                 <Tooltip />
                 <Legend />
@@ -190,10 +197,17 @@ export default function StatisticsPage() {
         {attendanceData.length > 0 && (
           <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 overflow-x-auto">
             <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-800">אחוזי נוכחות</h3>
-            <ResponsiveContainer width="100%" height={250} className="min-w-[300px]">
-              <BarChart data={attendanceData}>
+            <ResponsiveContainer width="100%" height={300} className="min-w-[300px]">
+              <BarChart data={attendanceData} margin={{ top: 5, right: 10, left: 0, bottom: 80 }}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
+                <XAxis 
+                  dataKey="name" 
+                  angle={-45} 
+                  textAnchor="end" 
+                  height={80}
+                  interval={0}
+                  tick={{ fontSize: 12 }}
+                />
                 <YAxis />
                 <Tooltip />
                 <Legend />
@@ -207,10 +221,17 @@ export default function StatisticsPage() {
         {cardsData.length > 0 && (
           <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 overflow-x-auto">
             <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-800">כרטיסים</h3>
-            <ResponsiveContainer width="100%" height={250} className="min-w-[300px]">
-              <BarChart data={cardsData}>
+            <ResponsiveContainer width="100%" height={300} className="min-w-[300px]">
+              <BarChart data={cardsData} margin={{ top: 5, right: 10, left: 0, bottom: 80 }}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
+                <XAxis 
+                  dataKey="name" 
+                  angle={-45} 
+                  textAnchor="end" 
+                  height={80}
+                  interval={0}
+                  tick={{ fontSize: 12 }}
+                />
                 <YAxis />
                 <Tooltip />
                 <Legend />
@@ -225,15 +246,14 @@ export default function StatisticsPage() {
         {positionData.length > 0 && (
           <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 overflow-x-auto">
             <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-800">התפלגות תפקידים</h3>
-            <ResponsiveContainer width="100%" height={250} className="min-w-[300px]">
-              <PieChart>
+            <ResponsiveContainer width="100%" height={300} className="min-w-[300px]">
+              <PieChart margin={{ top: 10, right: 10, bottom: 60, left: 10 }}>
                 <Pie
                   data={positionData}
                   cx="50%"
-                  cy="50%"
+                  cy="45%"
                   labelLine={false}
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={80}
+                  outerRadius={70}
                   fill="#8884d8"
                   dataKey="value"
                 >
@@ -241,7 +261,13 @@ export default function StatisticsPage() {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip formatter={(value: number) => `${value} שחקנים`} />
+                <Legend 
+                  verticalAlign="bottom" 
+                  height={50}
+                  formatter={(value) => value}
+                  wrapperStyle={{ fontSize: '14px' }}
+                />
               </PieChart>
             </ResponsiveContainer>
           </div>

@@ -1,8 +1,10 @@
+'use client';
+
 import Image from 'next/image';
 
 export default function Logo({ size = 120 }: { size?: number }) {
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center flex-shrink-0">
       <Image
         src="/maccabi-haifa-logo.svg"
         alt="לוגו מכבי חיפה"

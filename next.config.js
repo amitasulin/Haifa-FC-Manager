@@ -15,6 +15,17 @@ const nextConfig = {
       },
     ],
   },
+  webpack: (config) => {
+    // Suppress webpack cache warnings on Windows
+    config.infrastructureLogging = {
+      level: 'error',
+    };
+    return config;
+  },
+  onDemandEntries: {
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 2,
+  },
 }
 
 module.exports = nextConfig
