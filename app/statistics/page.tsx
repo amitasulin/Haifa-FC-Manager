@@ -108,10 +108,15 @@ export default function StatisticsPage() {
     }
   };
 
-  // Helper function to shorten names for charts
-  const shortenName = (name: string, maxLength: number = 12) => {
+  // Helper function to shorten names for charts - use first name or initials
+  const shortenName = (name: string, maxLength: number = 15) => {
     if (name.length <= maxLength) return name;
-    return name.substring(0, maxLength) + "...";
+    // Try to split by space and use first name + first letter of last name
+    const parts = name.split(" ");
+    if (parts.length >= 2) {
+      return parts[0] + " " + parts[1].charAt(0) + ".";
+    }
+    return name.substring(0, maxLength - 3) + "...";
   };
 
   // Chart data
@@ -120,7 +125,7 @@ export default function StatisticsPage() {
     .map((stat) => {
       const player = players.find((p) => p.id === stat.playerId);
       return {
-        name: shortenName(player?.name || "לא ידוע", 10),
+        name: shortenName(player?.name || "לא ידוע", 15),
         fullName: player?.name || "לא ידוע",
         goals: stat.goals,
       };
@@ -132,7 +137,7 @@ export default function StatisticsPage() {
     .map((stat) => {
       const player = players.find((p) => p.id === stat.playerId);
       return {
-        name: shortenName(player?.name || "לא ידוע", 10),
+        name: shortenName(player?.name || "לא ידוע", 15),
         fullName: player?.name || "לא ידוע",
         attendance: stat.attendancePercentage,
       };
@@ -145,7 +150,7 @@ export default function StatisticsPage() {
     .map((stat) => {
       const player = players.find((p) => p.id === stat.playerId);
       return {
-        name: shortenName(player?.name || "לא ידוע", 10),
+        name: shortenName(player?.name || "לא ידוע", 15),
         fullName: player?.name || "לא ידוע",
         yellow: stat.yellowCards,
         red: stat.redCards,
@@ -157,7 +162,7 @@ export default function StatisticsPage() {
     .map((stat) => {
       const player = players.find((p) => p.id === stat.playerId);
       return {
-        name: shortenName(player?.name || "לא ידוע", 10),
+        name: shortenName(player?.name || "לא ידוע", 15),
         fullName: player?.name || "לא ידוע",
         games: stat.gamesPlayed,
       };
@@ -268,22 +273,23 @@ export default function StatisticsPage() {
             </h3>
             <ResponsiveContainer
               width="100%"
-              height={450}
+              height={500}
               className="min-w-[300px]"
             >
               <BarChart
                 data={goalsData}
-                margin={{ top: 5, right: 10, left: 0, bottom: 150 }}
+                margin={{ top: 5, right: 10, left: 0, bottom: 180 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="name"
-                  angle={-90}
+                  angle={-45}
                   textAnchor="end"
-                  height={150}
+                  height={180}
                   interval={0}
                   tick={{ fontSize: 11, fill: "#333" }}
-                  dx={-5}
+                  tickMargin={15}
+                  tickFormatter={(value) => value}
                 />
                 <YAxis />
                 <Tooltip
@@ -308,22 +314,23 @@ export default function StatisticsPage() {
             </h3>
             <ResponsiveContainer
               width="100%"
-              height={450}
+              height={500}
               className="min-w-[300px]"
             >
               <BarChart
                 data={attendanceData}
-                margin={{ top: 5, right: 10, left: 0, bottom: 150 }}
+                margin={{ top: 5, right: 10, left: 0, bottom: 180 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="name"
-                  angle={-90}
+                  angle={-45}
                   textAnchor="end"
-                  height={150}
+                  height={180}
                   interval={0}
                   tick={{ fontSize: 11, fill: "#333" }}
-                  dx={-5}
+                  tickMargin={15}
+                  tickFormatter={(value) => value}
                 />
                 <YAxis />
                 <Tooltip />
@@ -342,22 +349,23 @@ export default function StatisticsPage() {
             </h3>
             <ResponsiveContainer
               width="100%"
-              height={450}
+              height={500}
               className="min-w-[300px]"
             >
               <BarChart
                 data={gamesPlayedData}
-                margin={{ top: 5, right: 10, left: 0, bottom: 150 }}
+                margin={{ top: 5, right: 10, left: 0, bottom: 180 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="name"
-                  angle={-90}
+                  angle={-45}
                   textAnchor="end"
-                  height={150}
+                  height={180}
                   interval={0}
                   tick={{ fontSize: 11, fill: "#333" }}
-                  dx={-5}
+                  tickMargin={15}
+                  tickFormatter={(value) => value}
                 />
                 <YAxis />
                 <Tooltip />
@@ -376,22 +384,23 @@ export default function StatisticsPage() {
             </h3>
             <ResponsiveContainer
               width="100%"
-              height={450}
+              height={500}
               className="min-w-[300px]"
             >
               <BarChart
                 data={cardsData}
-                margin={{ top: 5, right: 10, left: 0, bottom: 150 }}
+                margin={{ top: 5, right: 10, left: 0, bottom: 180 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="name"
-                  angle={-90}
+                  angle={-45}
                   textAnchor="end"
-                  height={150}
+                  height={180}
                   interval={0}
                   tick={{ fontSize: 11, fill: "#333" }}
-                  dx={-5}
+                  tickMargin={15}
+                  tickFormatter={(value) => value}
                 />
                 <YAxis />
                 <Tooltip />
