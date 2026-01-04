@@ -1,10 +1,13 @@
-import { Player, Event } from "@/types";
+import { Player, Event, PlayerStats } from "@/types";
 import {
   addPlayer,
   addEvent,
   getPlayers,
   getEvents,
   savePlayers,
+  savePlayerStats,
+  getPlayerStats,
+  saveEvents,
 } from "./storage";
 import { getPlayerImageUrl } from "./playerImages";
 
@@ -494,6 +497,7 @@ export const initializeSampleData = () => {
 
   // הוספת אירועים רק אם אין אירועים או אם אין מספיק משחקים
   const gamesCount = existingEvents.filter((e) => e.type === "משחק").length;
+  let eventsWereAdded = false;
   if (existingEvents.length === 0 || gamesCount < 5) {
     // אם יש אירועים קיימים אבל אין מספיק משחקים, נוסיף משחקים בעבר
     if (existingEvents.length > 0 && gamesCount < 5) {
@@ -545,19 +549,8 @@ export const initializeSampleData = () => {
             id: `event_${Date.now()}_past_${index}`,
           };
 
-          // הוסף נוכחות אקראית לשחקנים במשחק
-          const allPlayers = getPlayers();
-          allPlayers.forEach((player) => {
-            // שחקנים מרכזיים (מספר חולצה נמוך) - נוכחות גבוהה יותר
-            const isKeyPlayer =
-              player.jerseyNumber <= 11 || player.position === "שוער";
-            const attendanceChance = isKeyPlayer ? 0.85 : 0.7;
-            if (Math.random() < attendanceChance) {
-              newEvent.attendance![player.id] = true;
-            }
-          });
-
           addEvent(newEvent);
+          eventsWereAdded = true;
         }
       });
     } else {
@@ -568,7 +561,127 @@ export const initializeSampleData = () => {
           id: `event_${Date.now()}_${index}`,
         });
       });
+      eventsWereAdded = true;
     }
+  }
+
+  // יצירת סטטיסטיקות אקראיות אם אין סטטיסטיקות או אם נוספו אירועים חדשים
+  const existingStats = getPlayerStats();
+  const allPlayers = getPlayers();
+  const allEvents = getEvents();
+
+  if (
+    existingStats.length === 0 ||
+    eventsWereAdded ||
+    existingStats.length !== allPlayers.length
+  ) {
+    generateRandomStats(allPlayers, allEvents);
+  }
+};
+
+// פונקציה ליצירת סטטיסטיקות אקראיות
+const generateRandomStats = (players: Player[], events: Event[]): void => {
+  if (typeof window === "undefined") return;
+
+  const games = events.filter((e) => e.type === "משחק");
+  const totalGames = games.length;
+
+  const stats: PlayerStats[] = players.map((player) => {
+    const isYoung = player.age < 23;
+    const isInjured = player.isInjured;
+    const isKeyPlayer = player.jerseyNumber <= 11 || player.position === "שוער";
+
+    let minAttendance = 65;
+    let maxAttendance = 90;
+
+    if (isInjured) {
+      minAttendance = 20;
+      maxAttendance = 50;
+    } else if (isYoung) {
+      minAttendance = 55;
+      maxAttendance = 80;
+    } else if (isKeyPlayer) {
+      minAttendance = 80;
+      maxAttendance = 95;
+    }
+
+    const attendancePercentage = Math.floor(
+      Math.random() * (maxAttendance - minAttendance + 1) + minAttendance
+    );
+
+    const gamesPlayed = Math.max(
+      0,
+      Math.min(
+        totalGames,
+        Math.floor(
+          (attendancePercentage / 100) * totalGames + (Math.random() * 2 - 1)
+        )
+      )
+    );
+
+    const isAttacker = player.position === "התקפה";
+    const maxGoals = isAttacker ? 20 : 8;
+    const goals = Math.floor(Math.random() * (maxGoals + 1));
+
+    const yellowCards = Math.floor(Math.random() * 6);
+    const redCards = Math.random() > 0.85 ? Math.floor(Math.random() * 3) : 0;
+
+    return {
+      playerId: player.id,
+      gamesPlayed: gamesPlayed,
+      goals: goals,
+      yellowCards: yellowCards,
+      redCards: redCards,
+      attendancePercentage: attendancePercentage,
+    };
+  });
+
+  savePlayerStats(stats);
+
+  // עדכון נוכחות במשחקים בהתאם לסטטיסטיקות שנוצרו
+  if (totalGames > 0) {
+    // יצירת מיפוי של שחקן למשחקים שהוא שיחק בהם
+    const playerGamesMap: Record<string, string[]> = {};
+
+    stats.forEach((stat) => {
+      if (stat.gamesPlayed > 0) {
+        // בחירת משחקים אקראיים שהשחקן שיחק בהם (דטרמיניסטי לפי playerId)
+        const shuffledGames = [...games].sort((a, b) => {
+          const hashA = (stat.playerId + a.id).split("").reduce((acc, char) => {
+            return (acc << 5) - acc + char.charCodeAt(0);
+          }, 0);
+          const hashB = (stat.playerId + b.id).split("").reduce((acc, char) => {
+            return (acc << 5) - acc + char.charCodeAt(0);
+          }, 0);
+          return hashA - hashB;
+        });
+
+        playerGamesMap[stat.playerId] = shuffledGames
+          .slice(0, stat.gamesPlayed)
+          .map((g) => g.id);
+      }
+    });
+
+    const updatedEvents = events.map((event) => {
+      if (event.type === "משחק") {
+        const newAttendance: Record<string, boolean> = { ...event.attendance };
+
+        // עדכון נוכחות לפי המיפוי
+        Object.keys(playerGamesMap).forEach((playerId) => {
+          if (playerGamesMap[playerId].includes(event.id)) {
+            newAttendance[playerId] = true;
+          }
+        });
+
+        return {
+          ...event,
+          attendance: newAttendance,
+        };
+      }
+      return event;
+    });
+
+    saveEvents(updatedEvents);
   }
 };
 
